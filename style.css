@@ -1,0 +1,124 @@
+/* Configuración básica y fuentes */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #121214;
+    color: #e1e1e6;
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+.container {
+    max-width: 1100px;
+    width: 100%;
+    text-align: center;
+}
+
+h1 {
+    font-size: 2.5rem;
+    color: #ff9800;
+    margin-bottom: 5px;
+}
+
+.subtitle {
+    color: #8d8d99;
+    margin-bottom: 40px;
+    font-size: 1.1rem;
+}
+
+/* Contenedor flexible para alinear 4 arriba y 3 abajo centrados */
+.grid-miembros {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center; /* Esto centra los elementos de la última fila */
+}
+
+/* Diseño de cada tarjeta fijando un tamaño para que se organicen bien */
+.tarjeta {
+    background-color: #202024;
+    border: 2px solid #29292e;
+    border-radius: 12px;
+    padding: 25px;
+    transition: transform 0.2s, border-color 0.2s;
+    width: calc(25% - 15px); /* Intenta ocupar el 25% del ancho menos el espacio del gap */
+    min-width: 230px; /* Evita que se rompa en pantallas medianas */
+}
+
+.tarjeta:hover {
+    transform: translateY(-5px);
+    border-color: #ff9800;
+}
+
+.tarjeta h2 {
+    font-size: 1.4rem;
+    margin-bottom: 5px;
+    color: #ffffff;
+}
+
+/* Estilo para la etiqueta de Castigos */
+.castigo-info {
+    font-size: 0.95rem;
+    font-weight: bold;
+    color: #ff4747;
+    height: 20px; /* Mantiene el espacio reservado para que no salte el diseño al aparecer */
+    margin-bottom: 10px;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.castigo-info.activo {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Número de avisos */
+.contador {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #ff9800;
+    margin-bottom: 20px;
+}
+
+/* Botones de control */
+.botones {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.btn {
+    border: none;
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+    width: 60px;
+}
+
+.restar {
+    background-color: #4d4d56;
+    color: #ffffff;
+}
+
+.restar:hover {
+    background-color: #3e3e44;
+}
+
+.sumar {
+    background-color: #ff9800;
+    color: #121214;
+}
+
+.sumar:hover {
+    background-color: #e08600;
+}

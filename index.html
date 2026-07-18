@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control de Avisos del Grupo</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Contador de Avisos y castigos</h1>
+        <p class="subtitle">Registro oficial del grupo</p>
+        
+        <div class="grid-miembros">
+            <div class="tarjeta">
+                <h2>Aitor</h2>
+                <div class="castigo-info"></div>
+                <div class="contador">0</div>
+                <div class="botones">
+                    <button class="btn restar">-</button>
+                    <button class="btn sumar">+</button>
+                </div>
+            </div>
+
+            <div class="tarjeta">
+                <h2>Izan</h2>
+                <div class="castigo-info"></div>
+                <div class="contador">0</div>
+                <div class="botones">
+                    <button class="btn restar">-</button>
+                    <button class="btn sumar">+</button>
+                </div>
+            </div>
+
+            <div class="tarjeta">
+                <h2>Toni</h2>
+                <div class="contador">0</div>
+                <div class="botones">
+                    <button class="btn restar">-</button>
+                    <button class="btn sumar">+</button>
+                </div>
+            </div>
+
+            <div class="tarjeta">
+                <h2>Juan</h2>
+                <div class="castigo-info"></div>
+                <div class="contador">0</div>
+                <div class="botones">
+                    <button class="btn restar">-</button>
+                    <button class="btn sumar">+</button>
+                </div>
+            </div>
+
+            <div class="tarjeta">
+                <h2>Xavi</h2>
+                <div class="castigo-info"></div>
+                <div class="contador">0</div>
+                <div class="botones">
+                    <button class="btn restar">-</button>
+                    <button class="btn sumar">+</button>
+                </div>
+            </div>
+
+            <div class="tarjeta">
+                <h2>Dani</h2>
+                <div class="castigo-info"></div>
+                <div class="contador">0</div>
+                <div class="botones">
+                    <button class="btn restar">-</button>
+                    <button class="btn sumar">+</button>
+                </div>
+            </div>
+
+            <div class="tarjeta">
+                <h2>Éric</h2>
+                <div class="castigo-info"></div>
+                <div class="contador">0</div>
+                <div class="botones">
+                    <button class="btn restar">-</button>
+                    <button class="btn sumar">+</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const tarjetas = document.querySelectorAll('.tarjeta');
+
+        tarjetas.forEach(tarjeta => {
+            const btnRestar = tarjeta.querySelector('.restar');
+            const btnSumar = tarjeta.querySelector('.sumar');
+            const contador = tarjeta.querySelector('.contador');
+            const castigoInfo = tarjeta.querySelector('.castigo-info');
+
+            // Función para calcular y mostrar los castigos basados en los avisos
+            function actualizarCastigos(avisos) {
+                if (avisos > 2) {
+                    // Formula matemática: 3 avisos = 1, 6 avisos = 2, etc.
+                    const numCastigos = Math.floor((avisos - 0) / 3) || 1; 
+                    castigoInfo.textContent = `Castigos: ${numCastigos}`;
+                    castigoInfo.classList.add('activo');
+                } else {
+                    castigoInfo.textContent = '';
+                    castigoInfo.classList.remove('activo');
+                }
+            }
+
+            btnSumar.addEventListener('click', () => {
+                let valorActual = parseInt(contador.textContent);
+                let nuevoValor = valorActual + 1;
+                contador.textContent = nuevoValor;
+                actualizarCastigos(nuevoValor);
+            });
+
+            btnRestar.addEventListener('click', () => {
+                let valorActual = parseInt(contador.textContent);
+                if (valorActual > 0) {
+                    let nuevoValor = valorActual - 1;
+                    contador.textContent = nuevoValor;
+                    actualizarCastigos(nuevoValor);
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
