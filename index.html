@@ -84,44 +84,86 @@
         </div>
     </div>
 
-    <script>
-        const tarjetas = document.querySelectorAll('.tarjeta');
+<script>
+        // ⚠️ Vuelve a pegar aquí tu enlace exacto
+        const JSON_URL = "https://myjson.online/api/quick/2b9f14e2-c383-40fb-b1d3-a80fdcd76b4c"; 
 
-        tarjetas.forEach(tarjeta => {
-            const btnRestar = tarjeta.querySelector('.restar');
-            const btnSumar = tarjeta.querySelector('.sumar');
+        const tarjetas = document.querySelectorAll('.tarjeta');
+        let datosLocales = {};
+
+        // Función para actualizar la interfaz (número y castigos)
+        function actualizarInterfaz(tarjeta, avisos) {
             const contador = tarjeta.querySelector('.contador');
             const castigoInfo = tarjeta.querySelector('.castigo-info');
+            
+            contador.textContent = avisos;
 
-            // Función para calcular y mostrar los castigos basados en los avisos
-            function actualizarCastigos(avisos) {
-                if (avisos > 2) {
-                    // Formula matemática: 3 avisos = 1, 6 avisos = 2, etc.
-                    const numCastigos = Math.floor((avisos - 0) / 3) || 1; 
-                    castigoInfo.textContent = `Castigos: ${numCastigos}`;
-                    castigoInfo.classList.add('activo');
-                } else {
-                    castigoInfo.textContent = '';
-                    castigoInfo.classList.remove('activo');
-                }
+            if (avisos > 2) {
+                const numCastigos = Math.floor(avisos / 3) || 1;
+                castigoInfo.textContent = `Castigos: ${numCastigos}`;
+                castigoInfo.classList.add('activo');
+            } else {
+                castigoInfo.textContent = '';
+                castigoInfo.classList.remove('activo');
             }
+        }
+
+        // 1. Cargar datos desde internet al abrir la web
+        function cargarDatos() {
+            fetch(JSON_URL)
+                .then(res => res.json())
+                .then(response => {
+                    // Adaptación por si el servicio guarda los datos dentro de un objeto 'data'
+                    datosLocales = response.data || response; 
+                    
+                    tarjetas.forEach(tarjeta => {
+                        const nombre = tarjeta.querySelector('h2').textContent.trim();
+                        const avisos = datosLocales[nombre] || 0;
+                        actualizarInterfaz(tarjeta, avisos);
+                    });
+                })
+                .catch(err => console.error("Error al cargar datos:", err));
+        }
+
+        // 2. Guardar los datos en internet tras pulsar un botón
+        function guardarDatos() {
+            fetch(JSON_URL, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ data: datosLocales })
+            })
+            .then(() => {
+                cargarDatos(); // Sincroniza inmediatamente
+            })
+            .catch(err => console.error("Error al guardar datos:", err));
+        }
+
+        // Configurar los botones de cada miembro
+        tarjetas.forEach(tarjeta => {
+            const nombre = tarjeta.querySelector('h2').textContent.trim();
+            const btnRestar = tarjeta.querySelector('.restar');
+            const btnSumar = tarjeta.querySelector('.sumar');
 
             btnSumar.addEventListener('click', () => {
-                let valorActual = parseInt(contador.textContent);
-                let nuevoValor = valorActual + 1;
-                contador.textContent = nuevoValor;
-                actualizarCastigos(nuevoValor);
+                datosLocales[nombre] = (datosLocales[nombre] || 0) + 1;
+                actualizarInterfaz(tarjeta, datosLocales[nombre]);
+                guardarDatos();
             });
 
             btnRestar.addEventListener('click', () => {
-                let valorActual = parseInt(contador.textContent);
-                if (valorActual > 0) {
-                    let nuevoValor = valorActual - 1;
-                    contador.textContent = nuevoValor;
-                    actualizarCastigos(nuevoValor);
+                if ((datosLocales[nombre] || 0) > 0) {
+                    datosLocales[nombre] -= 1;
+                    actualizarInterfaz(tarjeta, datosLocales[nombre]);
+                    guardarDatos();
                 }
             });
         });
+
+        // Carga inicial
+        cargarDatos();
+
+        // Revisar cambios automáticamente cada 5 segundos por si algún amigo modifica algo
+        setInterval(cargarDatos, 5000);
     </script>
 
 </body>
