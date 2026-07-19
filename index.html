@@ -85,7 +85,7 @@
     </div>
 
 <script>
-        // ⚠️ Vuelve a pegar aquí tu enlace exacto
+        // ⚠️ PEGA AQUÍ TU ENLACE EXACTO DE MYJSON.ONLINE
         const JSON_URL = "https://myjson.online/api/quick/2b9f14e2-c383-40fb-b1d3-a80fdcd76b4c"; 
 
         const tarjetas = document.querySelectorAll('.tarjeta');
@@ -113,7 +113,7 @@
             fetch(JSON_URL)
                 .then(res => res.json())
                 .then(response => {
-                    // Adaptación por si el servicio guarda los datos dentro de un objeto 'data'
+                    // Corrección: Extraemos directamente la propiedad 'data' que devuelve myjson
                     datosLocales = response.data || response; 
                     
                     tarjetas.forEach(tarjeta => {
@@ -127,13 +127,18 @@
 
         // 2. Guardar los datos en internet tras pulsar un botón
         function guardarDatos() {
+            // Corrección: Enviamos la estructura limpia para que la API de myjson la acepte correctamente
             fetch(JSON_URL, {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
                 body: JSON.stringify({ data: datosLocales })
             })
+            .then(res => res.json())
             .then(() => {
-                cargarDatos(); // Sincroniza inmediatamente
+                console.log("Datos guardados con éxito en la nube");
             })
             .catch(err => console.error("Error al guardar datos:", err));
         }
@@ -159,10 +164,10 @@
             });
         });
 
-        // Carga inicial
+        // Carga inicial al abrir la página
         cargarDatos();
 
-        // Revisar cambios automáticamente cada 5 segundos por si algún amigo modifica algo
+        // Revisar cambios automáticamente cada 5 segundos
         setInterval(cargarDatos, 5000);
     </script>
 
